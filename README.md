@@ -1,3 +1,9 @@
+Files have been modified to work in python 3. 
+Before trying to compile them make sure you have the packages - pyquery and lxml.
+If have trouble installing them because of vs versions, try working in a virtual environment like anaconda.
+
+
+Original README content - 
 # Get Old Tweets Programatically
 A project written in Python to get old tweets, it bypass some limitations of Twitter Official API.
 
