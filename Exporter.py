@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import sys,getopt,got,datetime,codecs
-
+import sys,getopt,datetime,codecs
+import got3 as got
 def main(argv):
 
 	if len(argv) == 0:
-		print 'You must pass some parameters. Use \"-h\" to help.'
+		print('You must pass some parameters. Use \"-h\" to help.')
 		return
 		
 	if len(argv) == 1 and argv[0] == '-h':
-		print """\nTo use this jar, you can pass the folowing attributes:
+		print("""\nTo use this jar, you can pass the folowing attributes:
     username: Username of a specific twitter account (without @)
        since: The lower bound date (yyyy-mm-aa)
        until: The upper bound date (yyyy-mm-aa)
@@ -27,7 +27,7 @@ def main(argv):
  python Exporter.py --username "barackobama" --since 2015-09-10 --until 2015-09-12 --maxtweets 1\n
  
  # Example 4 - Get the last 10 top tweets by username
- python Exporter.py --username "barackobama" --maxtweets 10 --toptweets\n"""
+ python Exporter.py --username "barackobama" --maxtweets 10 --toptweets\n""")
 		return
  
 	try:
@@ -55,25 +55,25 @@ def main(argv):
 				tweetCriteria.maxTweets = int(arg)
 				
 		
-		outputFile = codecs.open("output_got.csv", "w+", "utf-8")
+		outputFile = codecs.open("output_got.txt", "w+", "utf-8")
 		
 		outputFile.write('username;date;retweets;favorites;text;geo;mentions;hashtags;id;permalink')
 		
-		print 'Searching...\n'
+		print('Searching...\n')
 		
 		def receiveBuffer(tweets):
 			for t in tweets:
-				outputFile.write(('\n%s;%s;%d;%d;"%s";%s;%s;%s;"%s";%s' % (t.username, t.date.strftime("%Y-%m-%d %H:%M"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
+				outputFile.write(('\n%s;\n%s;\n%d;\n%d;\n"%s";\n%s;\n%s;\n%s;\n"%s";\n%s\n' % (t.username, t.date.strftime("%Y-%m-%d %H:%M"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
 			outputFile.flush();
-			print 'More %d saved on file...\n' % len(tweets)
+			print('More %d saved on file...\n' % len(tweets))
 		
 		got.manager.TweetManager.getTweets(tweetCriteria, receiveBuffer)
 		
 	except arg:
-		print 'Arguments parser error, try -h' + arg
+		print('Arguments parser error, try -h' + arg)
 	finally:
 		outputFile.close()
-		print 'Done. Output file generated "output_got.csv".'
+		print('Done. Output file generated "output_got.txt".')
 
 if __name__ == '__main__':
 	main(sys.argv[1:])
