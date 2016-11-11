@@ -2,6 +2,8 @@
 
 import sys,getopt,datetime,codecs
 import got3 as got
+outputFile = open("output_got.txt", 'w+')
+
 def main(argv):
 
 	if len(argv) == 0:
@@ -53,17 +55,29 @@ def main(argv):
 				
 			elif opt == '--maxtweets':
 				tweetCriteria.maxTweets = int(arg)
-				
-		
-		outputFile = codecs.open("output_got.txt", "w+", "utf-8")
-		
-		outputFile.write('username;date;retweets;favorites;text;geo;mentions;hashtags;id;permalink')
+
 		
 		print('Searching...\n')
 		
 		def receiveBuffer(tweets):
 			for t in tweets:
-				outputFile.write(('\n%s;\n%s;\n%d;\n%d;\n"%s";\n%s;\n%s;\n%s;\n"%s";\n%s\n' % (t.username, t.date.strftime("%Y-%m-%d %H:%M"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
+				x={}
+				x['text'] = t.text
+				x['retweet_count'] = t.retweets
+				x['favorite_count'] = t.favorites
+				user={}
+				user['id'] = t.id
+				user['screen_name'] = t.username
+				x['user'] = user
+				x['geo'] = t.geo
+				x['time'] = t.date				
+				#print(t.date)
+				try:
+					outputFile.write(str(x))
+					outputFile.write("\n")
+				except:
+					pass
+				#outputFile.write(('\n%s;\n%s;\n%d;\n%d;\n"%s";\n%s;\n%s;\n%s;\n"%s";\n%s\n' % (t.username, t.date.strftime("%Y-%m-%d %H:%M"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
 			outputFile.flush();
 			print('More %d saved on file...\n' % len(tweets))
 		
